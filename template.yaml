@@ -246,14 +246,6 @@ Resources:
             ApiId: !Ref HttpApi
             PayloadFormatVersion: '2.0'
             TimeoutInMillis: 29000
-    Condition: RequestUnicornCreateNewResource
-  RequestUnicornExistingResource:
-    Type: Custom::StackeryExistingResource
-    Properties:
-      ServiceToken: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:stackery-agent-commander
-      Type: function
-      Data: arn:aws:lambda:<Region>:<AWS Account ID>:function:<Function Name>
-    Condition: RequestUnicornUseExistingResource
   Rides:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -285,9 +277,3 @@ Parameters:
 Metadata:
   EnvConfigParameters:
     EnvConfigunicornStableApiAsString: unicornStableApi
-Conditions:
-  RequestUnicornCreateNewResource: !Equals
-    - 'false'
-    - 'true'
-  RequestUnicornUseExistingResource: !Not
-    - Condition: RequestUnicornCreateNewResource
